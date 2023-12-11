@@ -1,0 +1,51 @@
+name: Build cache
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    permissions:
+      packages: write
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup spack
+      uses: spack/setup-spack@v2
+      with:
+        ref: develop
+        color: true
+        path: spack
+
+    - name: Add mochi-spack-packages
+      run: |
+        git clone https://github.com/mochi-hpc/mochi-spack-packages
+        spack -e . repo add mochi-spack-packages
+
+    - name: Install spack environment
+      run: |
+        spack -e . install --no-check-signature
+
+    - name: Show spack-installed packages
+      run: |
+        spack -e . find -dlv
+
+    - name: Push packages to buildcache and update index
+      if: ${{ !cancelled() }}
+      run: |
+        spack -e . mirror set --push \
+          --oci-username ${{ github.actor }} \
+          --oci-password "${{ secrets.GITHUB_TOKEN }}" mochi-buildcache
+        spack -e . buildcache push --base-image ubuntu:22.04 \
+          --unsigned --update-index mochi-buildcache
