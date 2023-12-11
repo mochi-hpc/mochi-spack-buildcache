@@ -6,10 +6,22 @@
 spack:
   specs:
   - mochi-margo
+  - mochi-thallium
+  - mochi-abt-io
+  - mochi-ch-placement
   - mercury~checksum~boostsys
   - libfabric fabrics=tcp,rxm
+  - mochi-bedrock+abtio+ssg+mona+mpi
+  - mochi-bedrock~abtio~ssg~mona~mpi
+  - mochi-mona
+  - mochi-poesie+lua+python+js+bedrock
+  - mochi-remi+bedrock
+  - mochi-ssg+mpi
+  - mochi-warabi+bedrock+remi
+  - mochi-yokan+bedrock+remi+berkeleydb+leveldb+lmdb+rocksdb+tkrzw+gdbm+unqlite+lua+python
+  - py-mochi-margo
   concretizer:
-    unify: true
+    unify: when_possible
     reuse: true
   modules:
     prefix_inspections:
@@ -20,3 +32,7 @@ spack:
   config:
     install_tree:
       padded_length: 128
+  packages:
+    all:
+      providers:
+        mpi: [ mpich ]
