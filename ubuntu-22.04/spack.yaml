@@ -11,13 +11,12 @@ spack:
   - mochi-ch-placement
   - mercury~checksum~boostsys
   - libfabric fabrics=tcp,rxm
-  - mochi-bedrock+abtio+ssg+mona+mpi
+  - mochi-bedrock
   - mochi-mona
-  - mochi-poesie+lua+python~js+bedrock
+  - mochi-poesie+bedrock
   - mochi-remi+bedrock
-  - mochi-ssg+mpi
-  - mochi-warabi+bedrock+remi
-  - mochi-yokan+bedrock+remi+berkeleydb+leveldb+lmdb+rocksdb+tkrzw+gdbm+unqlite+lua+python
+  - mochi-warabi+bedrock
+  - mochi-yokan+bedrock+berkeleydb+leveldb+lmdb+rocksdb+tkrzw+gdbm+unqlite+lua+python
   - py-mochi-margo
   concretizer:
     unify: when_possible
