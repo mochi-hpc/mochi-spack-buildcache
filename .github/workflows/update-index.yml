@@ -23,7 +23,13 @@ jobs:
         git clone https://github.com/mochi-hpc/mochi-spack-packages
         spack repo add mochi-spack-packages
 
+    - name: Add mirror
+      run: |
+        spack mirror add \
+            --oci-username ${{ github.actor }} \
+            --oci-password "${{ secrets.GITHUB_TOKEN }}" \
+            mochi-buildcache oci://ghcr.io/mochi-hpc/mochi-spack-buildcache
+
     - name: Update index
       run: |
-        spack buildcache update-index \
-          oci://ghcr.io/mochi-hpc/mochi-spack-buildcache
+        spack buildcache update-index mochi-buildcache
