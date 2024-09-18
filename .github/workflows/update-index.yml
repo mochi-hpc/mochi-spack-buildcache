@@ -1,0 +1,31 @@
+name: Force update index
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  update-index:
+    runs-on: ubuntu-22.04
+    permissions:
+      packages: write
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup spack
+      uses: spack/setup-spack@v2.1.1
+      with:
+        ref: develop
+
+    - name: Add mochi-spack-packages
+      run: |
+        git clone https://github.com/mochi-hpc/mochi-spack-packages
+        spack repo add mochi-spack-packages
+
+    - name: Update index
+      run: |
+        spack buildcache update-index \
+          --oci-username ${{ github.actor }} \
+          --oci-password "${{ secrets.GITHUB_TOKEN }}" \
+          oci://ghcr.io/mochi-hpc/mochi-spack-buildcache
