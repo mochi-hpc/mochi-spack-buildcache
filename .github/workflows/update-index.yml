@@ -26,6 +26,4 @@ jobs:
     - name: Update index
       run: |
         spack buildcache update-index \
-          --oci-username ${{ github.actor }} \
-          --oci-password "${{ secrets.GITHUB_TOKEN }}" \
           oci://ghcr.io/mochi-hpc/mochi-spack-buildcache
