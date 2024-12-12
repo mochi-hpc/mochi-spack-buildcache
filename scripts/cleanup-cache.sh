@@ -18,7 +18,9 @@ list_packages() {
     curl -s -H "Authorization: token ${GITHUB_TOKEN}" \
     -H "Accept: application/vnd.github+json" \
     "${API_URL}/orgs/${REPO_OWNER}/packages?package_type=container" > response.json
+    echo "Response:"
     cat response.json
+    echo "---"
     curl -s -H "Authorization: token ${GITHUB_TOKEN}" \
         -H "Accept: application/vnd.github+json" \
         "${API_URL}/orgs/${REPO_OWNER}/packages?package_type=container" | jq -r '.[].name'
