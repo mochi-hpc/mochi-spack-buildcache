@@ -4,8 +4,8 @@
 set -e
 
 # Repository owner and name
-REPO_OWNER=${GITHUB_REPOSITORY_OWNER}  # From GitHub context
-REPO_NAME=$(basename "${GITHUB_REPOSITORY}")  # From GitHub context
+REPO_OWNER=mochi-hpc
+REPO_NAME=mochi-spack-buildcache
 
 # GitHub token for authentication
 GITHUB_TOKEN=${GITHUB_TOKEN}  # Must be provided as a secret in the workflow
@@ -15,6 +15,10 @@ API_URL="https://api.github.com"
 
 # Function to fetch all packages
 list_packages() {
+    curl -s -H "Authorization: token ${GITHUB_TOKEN}" \
+    -H "Accept: application/vnd.github+json" \
+    "${API_URL}/orgs/${REPO_OWNER}/packages?package_type=container" > response.json
+    cat response.json
     curl -s -H "Authorization: token ${GITHUB_TOKEN}" \
         -H "Accept: application/vnd.github+json" \
         "${API_URL}/orgs/${REPO_OWNER}/packages?package_type=container" | jq -r '.[].name'
