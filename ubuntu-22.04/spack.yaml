@@ -16,7 +16,7 @@ spack:
   - mochi-poesie+bedrock
   - mochi-remi+bedrock
   - mochi-warabi+bedrock
-  - mochi-yokan+bedrock+berkeleydb+leveldb+lmdb+rocksdb+tkrzw+gdbm+unqlite+lua+python
+  - mochi-yokan+bedrock
   - py-mochi-margo
   view: /opt/view
   concretizer:
