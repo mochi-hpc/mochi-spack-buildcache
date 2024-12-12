@@ -41,8 +41,9 @@ jobs:
     - name: Push packages to buildcache and update index
       if: ${{ !cancelled() }}
       run: |
+        export MY_OCI_TOKEN=${{ secrets.GITHUB_TOKEN }}
         spack -e ubuntu-22.04 mirror set --push \
           --oci-username ${{ github.actor }} \
-          --oci-password "${{ secrets.GITHUB_TOKEN }}" mochi-buildcache
+          --oci-password-variable MY_OCI_TOKEN mochi-buildcache
         spack -e ubuntu-22.04 buildcache push --base-image ubuntu:22.04 \
           --unsigned --update-index mochi-buildcache

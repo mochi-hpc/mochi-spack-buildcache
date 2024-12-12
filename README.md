@@ -58,10 +58,21 @@ spack:
         signed: false
     config:
       install_tree:
+        root: /opt/spack
         padded_length: 128
+    packages:
+      all:
+        require: 'target=x86_64_v3'
 ```
 
-Make sure the mochi mirror is listed and `config:install_tree:padded_length` is set to 128.
+Make sure the mochi mirror is listed and `config:install_tree:padded_length` is set to 128,
+and `config:install_tree:root` is set to `/opt/spack` (this settings requires that you can
+have Spack install in this directory, which is generally the case in a container as root,
+but may not be on your machine).
+
+`packages:all:require` must be set to `'target=x86_64_v3'` as this is the type of architecture
+the cache is supposed to store images for.
+
 Add any specs you may need. This environment file will allow github actions that use it to
 rely on the buildcache to pull dependencies.
 
@@ -121,9 +132,10 @@ jobs:
     - name: Push packages to buildcache and update index
       if: ${{ !cancelled() }}
       run: |
+        export MY_OCI_TOKEN=${{ secrets.GITHUB_TOKEN }}
         spack -e $ENVNAME mirror set --push \
           --oci-username ${{ github.actor }} \
-          --oci-password "${{ secrets.GITHUB_TOKEN }}" mochi
+          --oci-password-variable MY_OCI_TOKEN mochi
         spack -e $ENVNAME buildcache push --base-image ubuntu:22.04 \
           --unsigned --update-index mochi
 ```
@@ -156,16 +168,12 @@ Now that you have your token, create an environment from a `spack.yaml` file
 and install the specs that it defines.
 
 Still with the environment activated, you can now add the token to your mirror
-setup as follows (replacing `<username>` and `<token>` with your github username
-and your generated token).
+setup as follows (replacing `<username>` and `<variable>` with your github username
+and the name of an environment variable set to your generated token).
 
 ```
-$ spack mirror set --push --oci-username <username> --oci-password <token> mochi
+$ spack mirror set --push --oci-username <username> --oci-password-variable <variable> mochi
 ```
-
-This will add the token (in clear) in a file in the currently activated
-environment, hence remember the warning above and make sure that your spack
-installation (or wherever your environment lives) is correctly protected.
 
 You can now push push specs into the buildcache.
 

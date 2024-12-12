@@ -18,6 +18,7 @@ spack:
   - mochi-warabi+bedrock
   - mochi-yokan+bedrock+berkeleydb+leveldb+lmdb+rocksdb+tkrzw+gdbm+unqlite+lua+python
   - py-mochi-margo
+  view: /opt/view
   concretizer:
     unify: when_possible
     reuse: dependencies
@@ -31,8 +32,10 @@ spack:
       signed: false
   config:
     install_tree:
+      root: /opt/spack
       padded_length: 128
   packages:
     all:
+      require: 'target=x86_64_v3'
       providers:
         mpi: [ mpich ]
