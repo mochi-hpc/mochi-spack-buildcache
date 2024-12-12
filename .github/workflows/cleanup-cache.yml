@@ -1,0 +1,17 @@
+name: Clean all packages
+
+on:
+  workflow_dispatch:
+
+jobs:
+  clean-packages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Delete All Packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          bash scripts/cleanup-cache.sh
