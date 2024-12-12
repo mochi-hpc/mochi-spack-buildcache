@@ -1,7 +1,7 @@
 name: Clean all packages
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: {}
 
 jobs:
   clean-packages:
