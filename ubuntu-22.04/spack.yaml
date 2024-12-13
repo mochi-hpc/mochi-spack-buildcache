@@ -5,7 +5,7 @@
 # the github cache action across runs.
 spack:
   specs:
-  - mochi-margo
+  - mochi-margo ^mercury~boostsys~checksum ^libfabric fabrics=tcp,rxm
   view: /opt/view
   concretizer:
     unify: when_possible
