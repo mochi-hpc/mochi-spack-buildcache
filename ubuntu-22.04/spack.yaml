@@ -6,18 +6,6 @@
 spack:
   specs:
   - mochi-margo
-  - mochi-thallium
-  - mochi-abt-io
-  - mochi-ch-placement
-  - mercury~checksum~boostsys
-  - libfabric fabrics=tcp,rxm
-  - mochi-bedrock
-  - mochi-mona
-  - mochi-poesie+bedrock
-  - mochi-remi+bedrock
-  - mochi-warabi+bedrock
-  - mochi-yokan+bedrock
-  - py-mochi-margo
   view: /opt/view
   concretizer:
     unify: when_possible
